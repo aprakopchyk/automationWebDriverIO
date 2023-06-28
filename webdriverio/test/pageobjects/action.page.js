@@ -94,23 +94,6 @@ class ActionPage {
 
     return gamesListNumber === gamesResultsNumber;
   }
-
-  async dataCompare() {
-    await this.gameName.waitForDisplayed();
-    const gameName = await this.gameName.getText();
-    const gameReleaseDate = (await this.gameName.getText()).slice(0, -3);
-    const gamePrice = await this.gamePrice.getText();
-
-    const gameNameNext = await this.gameNameNext.getText();
-    const gameReleaseDateNext = await this.gameReleaseDateNext.getText();
-    const gamePriceNext = await this.gamePriceNext.getText();
-
-    return [
-      gameName === gameNameNext,
-      gameReleaseDate === gameReleaseDateNext,
-      gamePrice === gamePriceNext,
-    ];
-  }
 }
 
 module.exports = new ActionPage();
