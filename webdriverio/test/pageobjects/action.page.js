@@ -32,6 +32,11 @@ class ActionPage {
       "//a[@class='facetedbrowse_FacetValueName_3WMvo' and contains(text(),'Реализм')]"
     );
   }
+  get filters() {
+    return $(
+      "//div[@class='facetedbrowse_FacetMenuTitle_3K6Uu' and contains(text(),'Фильтры')]"
+    );
+  }
   get gamesResults() {
     return $(".facetedbrowse_FacetedBrowseMatchCount_3jXlH");
   }
@@ -60,13 +65,14 @@ class ActionPage {
     return $(".release_date .date");
   }
   get gamePriceNext() {
-    return $(".game_purchase_price price");
+    return $(".game_purchase_price.price");
   }
 
   async filtersSelection() {
     const waitForElementAndClick = async (element) => {
       await element.waitForDisplayed();
       await element.click();
+      await browser.pause(1000);
     };
     await waitForElementAndClick(this.style);
     await waitForElementAndClick(this.showMore);
@@ -93,6 +99,24 @@ class ActionPage {
     const gamesListNumber = gamesList.length;
 
     return gamesListNumber === gamesResultsNumber;
+  }
+
+  async gameDataNextPage() {
+    const gameNameNext = await this.gameNameNext.getText();
+    const gameReleaseDateNext = await this.gameReleaseDateNext.getText();
+    const gamePriceText = await this.gamePriceNext.getText();
+    const gamePriceNext = gamePriceText.slice(0, -4);
+
+    return [gameNameNext, gameReleaseDateNext, gamePriceNext];
+  }
+
+  async gameData() {
+    const gameName = await this.gameName.getText();
+    const gameReleaseDateText = await this.gameReleaseDate.getText();
+    const gameReleaseDate = gameReleaseDateText.slice(0, -3);
+    const gamePrice = await this.gamePrice.getText();
+
+    return [gameName, gameReleaseDate, gamePrice];
   }
 }
 

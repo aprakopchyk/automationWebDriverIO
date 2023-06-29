@@ -9,9 +9,14 @@ describe("Проверка фильтров страницы Экшен", () => 
     await browser.url(config.get("MainPageUrlEng"));
     await MainPage.language.click();
     await MainPage.russianLanguage.click();
-    await browser.waitUntil(async () => {
-      return (await browser.getUrl()) === config.get("MainPageUrl") + "?";
-    });
+    await browser.waitUntil(
+      async () => {
+        return (await browser.getUrl()) === config.get("MainPageUrl") + "?";
+      },
+      {
+        timeout: 10000,
+      }
+    );
   });
 
   it("Проверка перехода на главную страницу", async () => {
@@ -43,7 +48,6 @@ describe("Проверка фильтров страницы Экшен", () => 
   });
 
   it("Проверка правильности данных", async () => {
-    await browser.pause(3000);
     const yOffset = 1000;
     await browser.execute((offset) => {
       window.scrollTo({
@@ -51,7 +55,9 @@ describe("Проверка фильтров страницы Экшен", () => 
         behavior: "smooth",
       });
     }, yOffset);
+
     await browser.pause(3000);
+
     await ActionPage.gameName.moveTo();
     await ActionPage.gameName.click();
     const windows = await browser.getWindowHandles();
@@ -59,19 +65,11 @@ describe("Проверка фильтров страницы Экшен", () => 
     await browser.waitUntil(() => windows.length > 1, {
       timeout: 5000,
     });
-
-    const gameNameNext = await ActionPage.gameNameNext.getText();
-    const gameReleaseDateNext = await ActionPage.gameReleaseDateNext.getText();
-    const gamePriceNext = await ActionPage.gamePriceNext.getText();
+    const gameDataNextPage = await ActionPage.gameDataNextPage();
     await browser.switchToWindow(windows[0]);
     await browser.pause(3000);
-    const gameName = await ActionPage.gameName.getText();
-    const gameReleaseDateText = await ActionPage.gameReleaseDate.getText();
-    const gameReleaseDate = gameReleaseDateText.slice(0, -3);
-    const gamePrice = await ActionPage.gamePrice.getText();
+    const gameData = await ActionPage.gameData();
 
-    expect(gameNameNext).to.equal(gameName);
-    expect(gameReleaseDateNext).to.equal(gameReleaseDate);
-    expect(gamePriceNext).to.equal(gamePrice);
+    expect(gameDataNextPage).to.deep.equal(gameData);
   });
 });
