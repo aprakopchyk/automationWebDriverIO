@@ -2,9 +2,11 @@ const ActionPage = require("../pageobjects/action.page");
 const MainPage = require("../pageobjects/main.page");
 const config = require("../pageobjects/config");
 const { expect } = require("chai");
+const logger = require("../pageobjects/logger");
 
 describe("Проверка фильтров страницы Экшен", () => {
   before(async () => {
+    logger.info("Test case starts: Проверка фильтров страницы Экшен");
     await browser.setWindowSize(1920, 1080);
     await browser.url(config.get("MainPageUrlEng"));
     await MainPage.language.click();
@@ -17,6 +19,16 @@ describe("Проверка фильтров страницы Экшен", () => 
         timeout: 10000,
       }
     );
+  });
+
+  after(async () => {
+    logger.info("Test case ends: Проверка фильтров страницы Экшен");
+  });
+
+  afterEach(function () {
+    if (this.currentTest.state === "failed") {
+      logger.error(`Test failed: ${this.currentTest.title}`);
+    }
   });
 
   it("Проверка перехода на главную страницу", async () => {

@@ -2,10 +2,26 @@ const MainPage = require("../pageobjects/main.page");
 const CommunityMarketPage = require("../pageobjects/community.market.page");
 const config = require("../pageobjects/config");
 const { expect } = require("chai");
+const logger = require("../pageobjects/logger");
 
 describe("Проверка фильтров формы SEARCH COMMUNITY MARKET", () => {
   before(async () => {
+    logger.info(
+      "Test case starts: Проверка фильтров формы SEARCH COMMUNITY MARKET"
+    );
     await browser.url(config.get("MainPageUrlEng"));
+  });
+
+  after(async () => {
+    logger.info(
+      "Test case ends: Проверка фильтров формы SEARCH COMMUNITY MARKET"
+    );
+  });
+
+  afterEach(function () {
+    if (this.currentTest.state === "failed") {
+      logger.error(`Test failed: ${this.currentTest.title}`);
+    }
   });
 
   it("Открытие страницы Community Market", async () => {

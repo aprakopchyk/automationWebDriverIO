@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "npx wdio",
     "wdio": "wdio run ./wdio.conf.js"
   },
   "keywords": [],
@@ -20,7 +20,11 @@
     "chromedriver": "^114.0.2",
     "geckodriver": "^4.0.4",
     "mocha": "^10.2.0",
+    "mocha-junit-reporter": "^2.2.0",
     "wdio-chromedriver-service": "^8.1.1",
     "wdio-geckodriver-service": "^5.0.1"
+  },
+  "dependencies": {
+    "winston": "^3.9.0"
   }
 }
