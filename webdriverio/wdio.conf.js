@@ -51,8 +51,7 @@ exports.config = {
   //
   capabilities: [
     {
-      // capabilities for local browser web tests
-      browserName: "chrome",
+      browserName: process.env.BROWSER || "chrome",
       "goog:chromeOptions": {
         args: ["--incognito"],
       },
