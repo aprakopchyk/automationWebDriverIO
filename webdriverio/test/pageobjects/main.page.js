@@ -1,7 +1,7 @@
 class MainPage {
   get about() {
     return $(
-      '#global_header .menuitem[href="https://store.steampowered.com/about/?snr=1_4_4__global-header"]'
+      '#global_header .menuitem[href="https://store.steampowered.com/about/?snr=1_4_600__global-header"]'
     );
   }
   get community() {
@@ -16,12 +16,12 @@ class MainPage {
   }
   get store() {
     return $(
-      '#global_header .menuitem.supernav.supernav_active[href="https://store.steampowered.com/?snr=1_4_4__global-header"]'
+      '#global_header .menuitem.supernav.supernav_active[href="https://store.steampowered.com/?snr=1_4_600__global-header"]'
     );
   }
   get storeMain() {
     return $(
-      '#global_header .submenuitem[href="https://store.steampowered.com/?snr=1_4_4__global-header"]'
+      '#global_header .submenuitem[href="https://store.steampowered.com/?snr=1_4_600__global-header"]'
     );
   }
   get action() {
