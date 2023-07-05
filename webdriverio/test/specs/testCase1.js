@@ -4,14 +4,14 @@ const config = require("../pageobjects/config");
 const { expect } = require("chai");
 const logger = require("../pageobjects/logger");
 
-describe("Сравнение числа игроков", () => {
+describe("Players number comparison", () => {
   before(async () => {
-    logger.info("Test case starts: Сравнение числа игроков");
+    logger.info("Test case starts: Players number comparison");
     await browser.url(config.get("MainPageUrlEng"));
   });
 
   after(async () => {
-    logger.info("Test case ends: Сравнение числа игроков");
+    logger.info("Test case ends: Players number comparison");
     await browser.url(config.get("MainPageUrlEng"));
   });
 
@@ -21,7 +21,7 @@ describe("Сравнение числа игроков", () => {
     }
   });
 
-  it("Открытие страницы About", async () => {
+  it("About page opening", async () => {
     await MainPage.about.click();
     browser.waitUntil(async () => {
       return (await browser.getUrl()) === config.get("AboutPageUrl");
@@ -30,7 +30,7 @@ describe("Сравнение числа игроков", () => {
     expect(currentUrl).to.equal(config.get("AboutPageUrl"));
   });
 
-  it("Сравнение игроков", async () => {
+  it("Players comparison", async () => {
     expect(await AboutPage.comparePlayers()).to.equal(true);
   });
 });
