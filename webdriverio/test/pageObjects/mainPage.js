@@ -1,7 +1,7 @@
 class MainPage {
   get about() {
     return $(
-      '#global_header .menuitem[href="https://store.steampowered.com/about/?snr=1_4_600__global-header"]'
+      '#global_header .menuitem[href="https://store.steampowered.com/about/?snr=1_4_4__global-header"]'
     );
   }
   get community() {
@@ -29,13 +29,16 @@ class MainPage {
       '.gutter_item[href="https://store.steampowered.com/tags/ru/%D0%AD%D0%BA%D1%88%D0%B5%D0%BD/?snr=1_4_4__125"]'
     );
   }
-  get language() {
-    return $(".pulldown.global_action_link");
+  async goToAboutPage() {
+    await this.about.click();
   }
-  get russianLanguage() {
-    return $(
-      "//a[@class='popup_menu_item tight' and contains(text(),'Русский (Russian)')]"
-    );
+  async goToCommunityMarketPage() {
+    await this.community.moveTo();
+    await this.communityMarket.waitForDisplayed();
+    await this.communityMarket.click();
+  }
+  async goToActionPage() {
+    await this.action.click();
   }
 }
 

@@ -1,3 +1,6 @@
+const StringUtils = require("../utils/stringUtils");
+const UniversalUtils = require("../utils/universalUtils");
+
 class CommunityMarketPage {
   get showAdvancedOptios() {
     return $("#market_search_advanced_show");
@@ -70,19 +73,11 @@ class CommunityMarketPage {
   get firstResultName() {
     return $("#result_0_name");
   }
-  get itemName() {
-    return $("#largeiteminfo_item_name");
+  async searchFormOpening() {
+    await this.showAdvancedOptios.waitForDisplayed();
+    await this.showAdvancedOptios.click();
+    await this.marketForm.waitForDisplayed();
   }
-  get gameName() {
-    return $("#largeiteminfo_game_name");
-  }
-  get itemType() {
-    return $("#largeiteminfo_item_type");
-  }
-  get itemDescription() {
-    return $("#largeiteminfo_item_descriptors");
-  }
-
   async parametrsSelection() {
     await this.gameDropdown.click();
     await this.gameSelection.click();
@@ -92,25 +87,25 @@ class CommunityMarketPage {
     await this.raritySelection.click();
     await this.searchBox.setValue("golden");
   }
-
+  async searchClick() {
+    await this.searchButton.click();
+  }
   async getFirstFiveResults() {
-    const results = await this.results;
-    return results.slice(0, 5);
+    return await UniversalUtils.getFirstNResults("#searchResultsRows", 5);
   }
-
-  async textVerification() {
-    const firstFiveResults = await this.getFirstFiveResults();
-
-    for (let result of firstFiveResults) {
-      const resultText = await result.getText();
-      expect(resultText).toContain("Golden");
-    }
+  async filtersDeletion() {
+    await UniversalUtils.deleteAndWaitForElement(this.goldenRemoveIcon);
+    await UniversalUtils.deleteAndWaitForElement(this.dotaRemoveIcon);
   }
-
-  async itemNameVerification() {
-    const firstResultNameText = await this.firstResultName.getText();
-    const itemNameText = await this.itemName.getText();
-    expect(firstResultNameText).toBe(itemNameText);
+  async getTotal() {
+    let totalText = await this.resultsTotal.getText();
+    return StringUtils.extractNumberFromText(totalText, 0);
+  }
+  async getFirstResultName() {
+    return await this.firstResultName.getText();
+  }
+  async goToFirstResultPage() {
+    await this.firstResultName.click();
   }
 }
 
