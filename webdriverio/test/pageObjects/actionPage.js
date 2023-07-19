@@ -42,42 +42,15 @@ class ActionPage {
       "//a[@class='facetedbrowse_FacetValueName_3WMvo' and contains(text(),'${name}')]"
     );
   }
-  async filtersSelection() {
-    await UniversalUtils.scrollToElement(filters);
-
-    let styleCategory = await this.getCategory(
-      config.filterValues.styleCategory
-    );
-    await UniversalUtils.waitForElementAndClick(styleCategory);
-
-    await UniversalUtils.waitForElementAndClick(this.showMore);
-
-    let styleValue = await this.getCategoryValue(
-      config.filterValues.styleValue
-    );
-    await UniversalUtils.waitForElementAndClick(styleValue);
-
-    let playersCategory = await this.getCategory(
-      config.filterValues.playersCategory
-    );
-    await UniversalUtils.waitForElementAndClick(playersCategory);
-
-    let playersValue = await this.getCategoryValue(
-      config.filterValues.playersValue
-    );
-    await UniversalUtils.waitForElementAndClick(playersValue);
-
-    let platformCategory = await this.getCategory(
-      config.filterValues.platformCategory
-    );
-    await UniversalUtils.waitForElementAndClick(platformCategory);
-
-    let platformValue = await this.getCategoryValue(
-      config.filterValues.platformValue
-    );
-    await UniversalUtils.waitForElementAndClick(platformValue);
+  async scrollToFilters() {
+    await UniversalUtils.scrollToElement(this.filters);
   }
-
+  async showMoreClick() {
+    await this.showMore.click();
+  }
+  async filterSelection(element) {
+    await UniversalUtils.waitForElementAndClick(element);
+  }
   async getGameResultsNumber() {
     const gamesResultsText = await this.gamesResults.getText();
     return UniversalUtils.extractNumberFromText(gamesResultsText, 0);

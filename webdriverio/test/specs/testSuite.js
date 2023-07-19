@@ -35,7 +35,22 @@ describe("Steam task", () => {
     await CommunityMarketPage.searchFormOpening();
     expect(await CommunityMarketPage.marketForm.isDisplayed()).to.be.true;
 
-    await CommunityMarketPage.parametrsSelection();
+    await CommunityMarketPage.parametrSelection(
+      CommunityMarketPage.gameDropdown
+    );
+    await CommunityMarketPage.parametrSelection(
+      CommunityMarketPage.gameSelection
+    );
+    await CommunityMarketPage.parametrSelection(
+      CommunityMarketPage.heroDropdown
+    );
+    await CommunityMarketPage.parametrSelection(
+      CommunityMarketPage.heroSelection
+    );
+    await CommunityMarketPage.parametrSelection(
+      CommunityMarketPage.raritySelection
+    );
+    await CommunityMarketPage.setValue();
 
     await CommunityMarketPage.searchClick();
     expect(await CommunityMarketPage.dotaFilter.isDisplayed()).to.be.true;
@@ -44,10 +59,17 @@ describe("Steam task", () => {
     expect(await CommunityMarketPage.immortalFilter.isDisplayed()).to.be.true;
     expect(await CommunityMarketPage.goldenFilter.isDisplayed()).to.be.true;
     const firstFiveResults = await CommunityMarketPage.getFirstFiveResults();
-    firstFiveResults.forEach((result) => expect(result).to.contain("Golden"));
+    firstFiveResults.forEach((result) =>
+      expect(result).to.contain(config.search.textValue)
+    );
 
     const totalBefore = await CommunityMarketPage.getTotal();
-    await CommunityMarketPage.filtersDeletion();
+    await CommunityMarketPage.filterDeletion(
+      CommunityMarketPage.goldenRemoveIcon
+    );
+    await CommunityMarketPage.filterDeletion(
+      CommunityMarketPage.dotaRemoveIcon
+    );
     const totalAfter = await CommunityMarketPage.getTotal();
     expect(totalBefore).not.to.equal(totalAfter);
 
@@ -55,13 +77,36 @@ describe("Steam task", () => {
     await CommunityMarketPage.goToFirstResultPage();
     const itemName = await MarketGamePage.getItemName();
     expect(firstResultName).to.equal(itemName);
-    expect(await MarketGamePage.getItemType()).to.include("Immortal");
-    expect(await MarketGamePage.getItemDescription()).to.include("Lifestealer");
+    expect(await MarketGamePage.getItemType()).to.include(
+      config.search.itemType
+    );
+    expect(await MarketGamePage.getItemDescription()).to.include(
+      config.search.itemDescription
+    );
   });
 
   it("Action page filters verification", async () => {
     await MainPage.goToActionPage();
-    await ActionPage.filtersSelection();
+    await ActionPage.scrollToFilters();
+    await ActionPage.filterSelection(
+      ActionPage.getCategory(config.filterValues.styleCategory)
+    );
+    await ActionPage.showMoreClick();
+    await ActionPage.filterSelection(
+      ActionPage.getCategoryValue(config.filterValues.styleValue)
+    );
+    await ActionPage.filterSelection(
+      ActionPage.getCategory(config.filterValues.playersCategory)
+    );
+    await ActionPage.filterSelection(
+      ActionPage.getCategoryValue(config.filterValues.playersValue)
+    );
+    await ActionPage.filterSelection(
+      ActionPage.getCategory(config.filterValues.platformCategory)
+    );
+    await ActionPage.filterSelection(
+      ActionPage.getCategoryValue(config.filterValues.platformValue)
+    );
 
     const gameResultsNumber = await ActionPage.getGameResultsNumber();
     const gamesListNumber = await ActionPage.getGamesListNumber();

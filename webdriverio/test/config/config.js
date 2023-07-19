@@ -13,4 +13,9 @@ module.exports = {
     platformCategory: "Platform",
     platformValue: "Linux / SteamOS",
   },
+  search: {
+    textValue: "Golden",
+    itemType: "Immortal",
+    itemDescription: "Lifestealer",
+  },
 };

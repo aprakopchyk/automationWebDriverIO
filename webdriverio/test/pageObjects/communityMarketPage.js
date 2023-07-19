@@ -1,5 +1,6 @@
 const StringUtils = require("../utils/stringUtils");
 const UniversalUtils = require("../utils/universalUtils");
+const config = require("../config/config");
 
 class CommunityMarketPage {
   get showAdvancedOptios() {
@@ -78,14 +79,11 @@ class CommunityMarketPage {
     await this.showAdvancedOptios.click();
     await this.marketForm.waitForDisplayed();
   }
-  async parametrsSelection() {
-    await this.gameDropdown.click();
-    await this.gameSelection.click();
-    await this.advancedFilters.waitForDisplayed();
-    await this.heroDropdown.click();
-    await this.heroSelection.click();
-    await this.raritySelection.click();
-    await this.searchBox.setValue("golden");
+  async parametrSelection(element) {
+    await UniversalUtils.waitForElementAndClick(element);
+  }
+  async setValue() {
+    await this.searchBox.setValue(config.search.textValue);
   }
   async searchClick() {
     await this.searchButton.click();
@@ -93,9 +91,8 @@ class CommunityMarketPage {
   async getFirstFiveResults() {
     return await UniversalUtils.getFirstNResults("#searchResultsRows", 5);
   }
-  async filtersDeletion() {
-    await UniversalUtils.deleteAndWaitForElement(this.goldenRemoveIcon);
-    await UniversalUtils.deleteAndWaitForElement(this.dotaRemoveIcon);
+  async filterDeletion(element) {
+    await UniversalUtils.deleteAndWaitForElement(element);
   }
   async getTotal() {
     let totalText = await this.resultsTotal.getText();
