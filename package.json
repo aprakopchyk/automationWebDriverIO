@@ -1,0 +1,32 @@
+{
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chai": "^4.3.7",
+    "dotenv": "^16.3.1",
+    "nock": "^13.3.1",
+    "winston": "^3.10.0"
+  },
+  "devDependencies": {
+    "mocha": "^10.2.0"
+  },
+  "name": "api_task",
+  "version": "1.0.0",
+  "main": "testCase1.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aprakopchyk/automationCourses.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aprakopchyk/automationCourses/issues"
+  },
+  "homepage": "https://github.com/aprakopchyk/automationCourses#readme",
+  "description": ""
+}
