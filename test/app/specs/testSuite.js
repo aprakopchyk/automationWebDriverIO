@@ -1,16 +1,17 @@
-const config = require("../config/config");
-const logger = require("../utils/logger");
+const testData = require("../testData/testData");
+const logger = require("../../framework/utils/logger");
 const HomePage = require("../pageobjects/homePage");
 const FirstCardPage = require("../pageobjects/firstCardPage");
 const SecondCardPage = require("../pageobjects/secondCardPage");
+const ThirdCardPage = require("../pageobjects/thirdCardPage");
 const { expect } = require("chai");
 
 describe("Userinterface task", () => {
   beforeEach(async function () {
     const testCaseName = this.currentTest.title;
     logger.info(`Test case starts: ${testCaseName}`);
-    await browser.url(config.get("HomePageUrl"));
-    await HomePage.isUniqueElementVisible();
+    await browser.url(testData.get("BaseURL"));
+    expect(await HomePage.isUniqueElementVisible()).to.be.true;
   });
 
   afterEach(function () {
@@ -21,40 +22,33 @@ describe("Userinterface task", () => {
 
   it("Cards navigation", async () => {
     await HomePage.clickOnNavigationLink();
+    expect(await FirstCardPage.isUniqueElementVisible()).to.be.true;
 
-    await FirstCardPage.enterRandomPassword(config.predefinedValues.password);
-    await FirstCardPage.enterRandomEmail(config.predefinedValues.email);
-    await FirstCardPage.enterRandomDomainName(
-      config.predefinedValues.domainName
-    );
-    await FirstCardPage.selectDropdownValue(
-      config.predefinedValues.domainDropdownIndex
-    );
+    await FirstCardPage.enterEmail();
+    await FirstCardPage.enterPassword();
+    await FirstCardPage.enterDomainName();
+    await FirstCardPage.enterDomainZone();
     await FirstCardPage.selectTermsAndConditionsCheckbox();
     await FirstCardPage.clickOnNavigationLink();
+    expect(await SecondCardPage.isUniqueElementVisible()).to.be.true;
 
     await SecondCardPage.selectUnselectCheckbox();
-    await SecondCardPage.selectRandomInterests(
-      config.predefinedValues.firstInterestIndex
-    );
-    await SecondCardPage.selectRandomInterests(
-      config.predefinedValues.secondInterestIndex
-    );
-    await SecondCardPage.selectRandomInterests(
-      config.predefinedValues.thirdInterestIndex
-    );
+    await SecondCardPage.selectInterestCheckbox();
+    await SecondCardPage.selectInterestCheckbox();
+    await SecondCardPage.selectInterestCheckbox();
+
     await SecondCardPage.clickOnNavigationLink();
+    expect(await ThirdCardPage.isUniqueElementVisible()).to.be.true;
     const validationErrorText = await SecondCardPage.getValidationErrorText();
     const validationErrorTextColor =
       await SecondCardPage.getValidationErrorTextColor();
-    expect(validationErrorText).to.equal(config.validationTextProperties.text);
-    expect(validationErrorTextColor).to.equal(
-      config.validationTextProperties.color
-    );
+    expect(validationErrorText).to.equal(testData.testDataValues.text);
+    expect(validationErrorTextColor).to.equal(testData.testDataValues.color);
   });
 
   it("Cookies form verification", async () => {
     await HomePage.clickOnNavigationLink();
+    expect(await FirstCardPage.isUniqueElementVisible()).to.be.true;
 
     await FirstCardPage.acceptCookies();
     const cookiesForm =
@@ -64,13 +58,15 @@ describe("Userinterface task", () => {
 
   it("Timer verification", async () => {
     await HomePage.clickOnNavigationLink();
+    expect(await FirstCardPage.isUniqueElementVisible()).to.be.true;
 
     const timerData = await FirstCardPage.getTimerData();
-    expect(timerData).to.equal(config.predefinedValues.timerData);
+    expect(timerData).to.equal(testData.testDataValues.timerData);
   });
 
   it("Help form verification", async () => {
     await HomePage.clickOnNavigationLink();
+    expect(await FirstCardPage.isUniqueElementVisible()).to.be.true;
 
     await FirstCardPage.clickHideHelpForm();
     const helpFormVisibility = await FirstCardPage.isHelpFormHidden();

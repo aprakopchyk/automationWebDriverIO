@@ -8,8 +8,7 @@ class BasePage {
   }
 
   async isUniqueElementVisible() {
-    const uniqueElementVisible = await this.uniqueElement.waitForDisplayed();
-    return uniqueElementVisible;
+    return await this.uniqueElement.waitForDisplayed();
   }
 }
 

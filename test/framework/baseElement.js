@@ -1,4 +1,4 @@
-const logger = require("../utils/logger");
+const logger = require("./utils/logger");
 
 class BaseElement {
   constructor(locator, name) {
@@ -8,7 +8,7 @@ class BaseElement {
     this.locator = locator;
     this.name = name;
   }
-  
+
   async getElement() {
     try {
       const element = await $(this.locator);
@@ -34,7 +34,7 @@ class BaseElement {
   async waitForDisplayed(timeout) {
     const element = await this.getElement();
     try {
-      await element.waitForDisplayed({ timeout: timeout });
+      await element.waitForDisplayed({ timeout });
       logger.info(`Element: ${this.name} was found and is displayed`);
       return true;
     } catch (error) {
@@ -46,7 +46,7 @@ class BaseElement {
   async waitForElementToBeNotDisplayed(timeout) {
     const element = await this.getElement();
     try {
-      await element.waitForDisplayed({ timeout: timeout, reverse: true });
+      await element.waitForDisplayed({ timeout, reverse: true });
       logger.info(`Element: ${this.name} was not found and is not displayed`);
       return true;
     } catch (error) {
@@ -77,6 +77,29 @@ class BaseElement {
     const element = await this.getElement();
     logger.info(`Getting the CSS of element: ${this.name}`);
     return element.getCSSProperty(value);
+  }
+
+  async scrollToElement() {
+    const element = await this.getElement();
+    logger.info(`Scrolling to the element: ${this.name}`);
+    await element.scrollIntoView();
+  }
+
+  async waitForElementToBeHidden(value, options = { timeout: 10000 }) {
+    const element = await this.getElement();
+    try {
+      await element.waitUntil(async () => {
+        const elementHeight = await element.getCSSProperty("height");
+        return parseFloat(elementHeight.value) < value;
+      }, options);
+      logger.info(`Condition met for element: ${this.name}`);
+      return true;
+    } catch (error) {
+      logger.error(
+        `Condition was not met in time for element ${this.name}: ${error}`
+      );
+      return false;
+    }
   }
 }
 
