@@ -6,12 +6,12 @@ class HomePage extends BasePage {
   constructor() {
     super(
       new Label(
-        ".//button[@class='start__button' and text()='NO']",
+        "//button[contains(@class, 'button') and contains(text(), 'NO')]",
         "Home page indicator"
       )
     );
     this.navigationLink = new Link(
-      ".//a[@class='start__link' and text()='HERE']",
+      "//a[contains(@class, 'link') and contains(text(), 'HERE')]",
       "Navigation link"
     );
   }

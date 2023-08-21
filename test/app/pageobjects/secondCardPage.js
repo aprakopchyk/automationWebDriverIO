@@ -3,30 +3,30 @@ const Checkbox = require("../../framework/commonElements/checkbox");
 const Label = require("../../framework/commonElements/label");
 const ListItem = require("../../framework/commonElements/listItem");
 const Link = require("../../framework/commonElements/link");
-const UniversalUtils = require("../../framework/utils/universalUtils");
+const ArrayUtils = require("../../framework/utils/arrayUtils");
 
 class SecondCardPage extends BasePage {
   constructor() {
     super(
       new Label(
-        "//h2[@class='avatar-and-interests__title' and text()='This is me']",
+        "//h2[contains(@class, 'title') and contains(text(), 'This is me')]",
         "Second page indicator"
       )
     );
     this.unselectCheckbox = new Checkbox(
-      "//label[@for='interest_unselectall']",
+      "//label[contains(@for, 'unselectall')]",
       "Unselect checkbox"
     );
     this.interestCheckboxes = new ListItem(
-      "//span[@class='checkbox__box']",
-      "Interest checkboxes"
+      "//span[contains(@class, 'checkbox')]",
+      "Interest checkbox"
     );
     this.navigationLink = new Link(
-      "//button[text()='Next']",
+      "//button[contains(@class, 'button') and contains(text(), 'Next')]",
       "Navigation link"
     );
     this.validationError = new Label(
-      "//li[@class='avatar-and-interests__error' and text()='Please upload a picture']",
+      "//li[contains(@class, 'error') and contains(text(), 'Please upload a picture')]",
       "Validation error"
     );
     this.selectedInterests = [];
@@ -43,7 +43,7 @@ class SecondCardPage extends BasePage {
       (_, index) => !this.selectedInterests.includes(index)
     );
     if (availableOptions.length === 0) return;
-    const interest = UniversalUtils.getElementFromArray(availableOptions);
+    const interest = ArrayUtils.getElementFromArray(availableOptions);
     this.selectedInterests.push(interestOptions.indexOf(interest));
     await interest.click();
   }

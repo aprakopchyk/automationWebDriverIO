@@ -1,4 +1,5 @@
 const logger = require("./utils/logger");
+const config = require("../framework/utils/config");
 
 class BaseElement {
   constructor(locator, name) {
@@ -85,7 +86,10 @@ class BaseElement {
     await element.scrollIntoView();
   }
 
-  async waitForElementToBeHidden(value, options = { timeout: 10000 }) {
+  async waitForElementToBeHidden(
+    value,
+    options = { timeout: config.timeoutTime }
+  ) {
     const element = await this.getElement();
     try {
       await element.waitUntil(async () => {

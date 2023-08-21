@@ -7,76 +7,78 @@ const Checkbox = require("../../framework/commonElements/checkbox");
 const Label = require("../../framework/commonElements/label");
 const Button = require("../../framework/commonElements/button");
 const Form = require("../../framework/commonElements/form");
-const UniversalUtils = require("../../framework/utils/universalUtils");
+const ArrayUtils = require("../../framework/utils/arrayUtils");
+const testData = require("../testData/testData");
 
 class FirstCardPage extends BasePage {
   constructor() {
-    super(new Label("//div[@class='logo__icon']", "First page indicator"));
+    super(new Label("//div[contains(@class, 'logo')]", "First page indicator"));
     this.passwordField = new Input(
-      "//input[@class='input input--blue input--gray' and @placeholder='Choose Password']",
+      "//div[contains(@class, 'login')]//input[contains(@placeholder, 'Choose Password')]",
       "Password"
     );
     this.emailField = new Input(
-      "//input[@class='input input--blue input--gray' and @placeholder='Your email']",
+      "//div[contains(@class, 'align')]//input[contains(@placeholder, 'Your email')]",
       "Email"
     );
     this.domainField = new Input(
-      "//input[@class='input input--blue input--gray' and @placeholder='Domain']",
+      "//div[contains(@class, 'align')]//input[contains(@placeholder, 'Domain')]",
       "Domain name"
     );
     this.domainZone = new Dropdown(
-      "//div[@class='dropdown__field' and text()='other']",
+      "//div[contains(@class, 'dropdown__field')]",
       "Domain zone"
     );
     this.domainValues = new ListItem(
-      "//div[@class='dropdown__list-item']",
+      "//div[contains(@class, 'dropdown__list')]",
       "Domain values"
     );
-    this.checkbox = new Checkbox("//span[@class='checkbox__box']", "Checkbox");
+    this.checkbox = new Checkbox(
+      "//span[contains(@class, 'checkbox')]",
+      "Checkbox"
+    );
     this.navigationLink = new Link(
-      "//a[@class='button--secondary' and text()='Next']",
+      "//a[contains(@class, 'button') and contains(text(), 'Next')]",
       "Navigation link"
     );
     this.sendToBottomButton = new Button(
-      "//button[@class='button button--solid button--blue help-form__send-to-bottom-button' and span[@class='highlight']='Send']",
+      "//button[contains(@class, 'button') and contains(., 'Send')]",
       "Send to bottom button"
     );
     this.helpForm = new Form(
-      "//div[@class='help-form__container']",
+      "//div[contains(@class, 'help-form')]",
       "Help form"
     );
-    this.cookies = new Form("//div[@class='cookies']", "Cookies form");
+    this.cookies = new Form(
+      "//div[contains(@class, 'cookies')]",
+      "Cookies form"
+    );
     this.acceptCookiesButton = new Button(
-      "//button[@class='button button--solid button--transparent' and text()='Not really, no']",
+      "//button[contains(@class, 'button') and contains(text(), 'Not really, no')]",
       "Accept cookies button"
     );
-    this.timer = new Label(
-      "//div[@class='timer timer--white timer--center']",
-      "Timer"
-    );
+    this.timer = new Label("//div[contains(@class, 'timer')]", "Timer");
   }
 
   async enterEmail() {
-    this.email = await UniversalUtils.generateEmail();
+    this.email = await ArrayUtils.generateEmail();
     await this.emailField.clearAndSetValue(this.email);
   }
 
   async enterPassword() {
-    const password = await UniversalUtils.generatePassword(this.email);
+    const password = await ArrayUtils.generatePassword(this.email);
     await this.passwordField.clearAndSetValue(password);
   }
 
   async enterDomainName() {
-    const domain = await UniversalUtils.generateDomainName();
+    const domain = await ArrayUtils.generateDomainName();
     await this.domainField.clearAndSetValue(domain);
   }
 
   async enterDomainZone() {
     await this.domainZone.click();
     const domainOptions = await this.domainValues.getAllElements();
-    const domainOption = await UniversalUtils.getElementFromArray(
-      domainOptions
-    );
+    const domainOption = await ArrayUtils.getElementFromArray(domainOptions);
     await domainOption.click();
   }
 
@@ -102,7 +104,9 @@ class FirstCardPage extends BasePage {
   }
 
   async isHelpFormHidden() {
-    return await this.helpForm.waitForElementToBeHidden(50);
+    return await this.helpForm.waitForElementToBeHidden(
+      testData.testDataValues.distanceForElementToBeHidden
+    );
   }
 }
 

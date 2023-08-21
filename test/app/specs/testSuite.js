@@ -1,5 +1,6 @@
 const testData = require("../testData/testData");
 const logger = require("../../framework/utils/logger");
+const testCasesStatus = require("../../framework/utils/testCasesStatuses");
 const HomePage = require("../pageobjects/homePage");
 const FirstCardPage = require("../pageobjects/firstCardPage");
 const SecondCardPage = require("../pageobjects/secondCardPage");
@@ -15,7 +16,7 @@ describe("Userinterface task", () => {
   });
 
   afterEach(function () {
-    if (this.currentTest.state === "failed") {
+    if (this.currentTest.state === testCasesStatus.failed) {
       logger.error(`Test failed: ${this.currentTest.title}`);
     }
   });
