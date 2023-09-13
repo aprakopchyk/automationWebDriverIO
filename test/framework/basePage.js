@@ -1,3 +1,5 @@
+const config = require("../framework/utils/config");
+
 class BasePage {
   constructor(uniqueElement, name) {
     if (this.constructor === BasePage) {
@@ -7,8 +9,8 @@ class BasePage {
     this.name = name;
   }
 
-  async isUniqueElementVisible(timeout) {
-    return await this.uniqueElement.waitForDisplayed(timeout);
+  async isUniqueElementVisible() {
+    return await this.uniqueElement.waitForDisplayed(config.config.pageLoad);
   }
 }
 

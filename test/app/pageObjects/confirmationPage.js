@@ -20,11 +20,11 @@ class ConfirmationPage extends BasePage {
   }
 
   async getVerificationEmailText() {
-    return await this.verificationEmail.getText();
+    return this.verificationEmail.getText();
   }
 
   async getSubscriptionMessageText() {
-    return await this.subscriptionMessage.getText();
+    return this.subscriptionMessage.getText();
   }
 }
 

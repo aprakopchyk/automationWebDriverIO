@@ -1,4 +1,5 @@
 const logger = require("../framework/utils/logger");
+const config = require("../framework/utils/config");
 
 class BaseElement {
   constructor(locator, name) {
@@ -21,10 +22,10 @@ class BaseElement {
     return elements;
   }
 
-  async waitForDisplayed(timeout) {
+  async waitForDisplayed() {
     const element = await this.getElement();
     try {
-      await element.waitForDisplayed({ timeout });
+      await element.waitForDisplayed(config.config.elementLoad);
       logger.info(`Element: ${this.name} was found and is displayed`);
       return true;
     } catch (error) {
@@ -33,10 +34,13 @@ class BaseElement {
     }
   }
 
-  async waitForElementToBeNotDisplayed(timeout) {
+  async waitForElementToBeNotDisplayed() {
     const element = await this.getElement();
     try {
-      await element.waitForDisplayed({ timeout, reverse: true });
+      await element.waitForDisplayed({
+        timeout: config.config.elementLoad,
+        reverse: true,
+      });
       logger.info(`Element: ${this.name} was not found and is not displayed`);
       return true;
     } catch (error) {

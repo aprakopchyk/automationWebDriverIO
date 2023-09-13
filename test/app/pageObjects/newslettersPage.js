@@ -6,7 +6,11 @@ const Input = require("../../framework/commonElements/input");
 const Link = require("../../framework/commonElements/link");
 const Button = require("../../framework/commonElements/button");
 const Form = require("../../framework/commonElements/form");
+const PreviewForm = require("../../framework/commonElements/previewForm");
+
 const testData = require("../testData/testData");
+const BASE_XPATH = "//a[contains(@href, '{VALUE}')]";
+const baseXpath = (value) => BASE_XPATH.replace("{VALUE}", value);
 
 class NewslettersPage extends BasePage {
   constructor() {
@@ -32,22 +36,21 @@ class NewslettersPage extends BasePage {
       "//input[contains(@data-event, 'NL')]",
       "'Continue' button"
     );
-    this.euronewsNewsletterPreviewLink = new Link(
-      "//a[contains(@href, 'euronews-today')]",
-      "Euronews newsletter preview link"
-    );
-    this.euronewsPreviewForm = new Form(
+    this.euronewsPreviewForm = new PreviewForm(
       "//div[contains(@id, 'today_previews')]",
       "Euronews preview form"
     );
     this.closeButtonOnPreviewForm = new Button(
-      "//a[contains(@href, '#close')]",
+      baseXpath("#close"),
       "Close preview form button"
     );
-    this.previewLinks = new Link(
-      "//a[contains(@href, 'previews')]",
-      "Previews links"
+
+    this.euronewsNewsletterPreviewLink = new Link(
+      baseXpath("euronews-today"),
+      "Euronews newsletter preview link"
     );
+
+    this.previewLinks = new Link(baseXpath("previews"), "Previews links");
     this.homePage = new Link("//a[@href='/']");
   }
 
@@ -90,12 +93,24 @@ class NewslettersPage extends BasePage {
     );
   }
 
-  async enterEmail() {
-    this.randomEmail = StringUtils.generateRandomEmail(
-      testData.testDataValues.emailUsernameLength,
-      testData.testDataValues.emailDomatinLength
-    );
-    await this.emailInput.setValue(this.randomEmail);
+  async waitForEmailFormToBeDisplayed() {
+    await this.emailForm.waitForDisplayed();
+  }
+
+  async waitForEuronewsPreviewLinkToBeDisplayed() {
+    await this.euronewsNewsletterPreviewLink.waitForDisplayed();
+  }
+
+  async waitForEuronewsPreviewFormToBeDisplayed() {
+    await this.euronewsPreviewForm.waitForDisplayed();
+  }
+
+  async waitForEuronewsPreviewFormToBeNotDisplayed() {
+    await this.euronewsPreviewForm.waitForElementToBeNotDisplayed();
+  }
+
+  async enterEmail(email) {
+    await this.emailInput.setValue(email);
   }
 
   async clickOnContinueButton() {

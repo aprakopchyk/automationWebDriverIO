@@ -9,13 +9,12 @@ const RegistrationPage = require("../pageObjects/registrationPage");
 const ConfirmationPage = require("../pageObjects/confirmationPage");
 const testData = require("../testData/testData");
 const { expect } = require("chai");
+const StringUtils = require("../../framework/utils/stringUtils");
 
 describe("Euronews app", () => {
   beforeEach(async function () {
     Browser.openUrl(url.urls.baseURL);
-    expect(
-      await HomePage.isUniqueElementVisible(config.config.pageLoad)
-    ).to.be.true;
+    expect(await HomePage.isUniqueElementVisible()).to.be.true;
     logger.info(`Test case starts: ${this.currentTest.title}`);
   });
 
@@ -31,24 +30,28 @@ describe("Euronews app", () => {
     await HomePage.clickOnAcceptCookiesButton();
     await HomePage.clicOnkNewslettersLink();
 
-    await NewslettersPage.isUniqueElementVisible(config.config.pageLoad);
+    await NewslettersPage.isUniqueElementVisible();
     await NewslettersPage.selectRandomSubscriptionPlan();
-    await NewslettersPage.emailForm.waitForDisplayed(config.config.elementLoad);
+    await NewslettersPage.waitForEmailFormToBeDisplayed();
     expect(await NewslettersPage.buttonIsChanged()).to.be.true;
     expect(await NewslettersPage.formIsAtTheBottom()).to.be.true;
 
-    await NewslettersPage.enterEmail();
+    const randomEmail = StringUtils.generateRandomEmail(
+      testData.testDataValues.emailUsernameLength,
+      testData.testDataValues.emailDomainLength
+    );
+    await NewslettersPage.enterEmail(randomEmail);
     await NewslettersPage.clickOnContinueButton();
 
-    await RegistrationPage.isUniqueElementVisible(config.config.pageLoad);
-    await RegistrationPage.enterPassword();
-    await RegistrationPage.disabledButton.waitForElementToBeNotDisplayed(
-      config.config.elementLoad
+    await RegistrationPage.isUniqueElementVisible();
+    await RegistrationPage.enterPassword(
+      StringUtils.generatePassword(testData.testDataValues.passwordLength)
     );
+    await RegistrationPage.waitForDisabledButtonToBeNotDisplayed();
     await RegistrationPage.clickOnCreateMyAccoutButton();
 
-    await ConfirmationPage.isUniqueElementVisible(config.config.pageLoad);
-    expect(NewslettersPage.randomEmail).to.equal(
+    await ConfirmationPage.isUniqueElementVisible();
+    expect(randomEmail).to.equal(
       await ConfirmationPage.getVerificationEmailText()
     );
     expect(testData.testDataValues.subscriptionMessage).to.equal(
@@ -58,7 +61,7 @@ describe("Euronews app", () => {
 
   it("Newsletters page verification", async () => {
     await HomePage.clicOnkNewslettersLink();
-    await NewslettersPage.isUniqueElementVisible(config.config.pageLoad);
+    await NewslettersPage.isUniqueElementVisible();
 
     expect(
       await NewslettersPage.getNewsletterText(
@@ -76,30 +79,20 @@ describe("Euronews app", () => {
       )
     ).to.deep.equal(testData.testDataValues.cultureNewsletter);
 
-    await NewslettersPage.euronewsNewsletterPreviewLink.waitForDisplayed(
-      config.config.elementLoad
-    );
+    await NewslettersPage.waitForEuronewsPreviewLinkToBeDisplayed();
     await NewslettersPage.clickOnEuronewsNewsletterPreviewLink();
-    await NewslettersPage.euronewsPreviewForm.waitForDisplayed(
-      config.config.elementLoad
-    );
+    await NewslettersPage.waitForEuronewsPreviewFormToBeDisplayed();
 
     await NewslettersPage.clickOnPreviewCloseButton();
-    await NewslettersPage.euronewsPreviewForm.waitForElementToBeNotDisplayed(
-      config.config.elementLoad
-    );
+    await NewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
 
     await NewslettersPage.clickOnOtherNewsletterPreviewLink();
-    await NewslettersPage.euronewsPreviewForm.waitForDisplayed(
-      config.config.elementLoad
-    );
+    await NewslettersPage.waitForEuronewsPreviewFormToBeDisplayed();
 
     await NewslettersPage.clickOnPreviewCloseButton();
-    await NewslettersPage.euronewsPreviewForm.waitForElementToBeNotDisplayed(
-      config.config.elementLoad
-    );
+    await NewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
 
     await NewslettersPage.clickOnLogoIcon();
-    await HomePage.isUniqueElementVisible(config.config.pageLoad);
+    await HomePage.isUniqueElementVisible();
   });
 });

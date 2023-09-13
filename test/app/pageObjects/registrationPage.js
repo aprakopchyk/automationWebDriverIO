@@ -27,10 +27,12 @@ class RegistrationPage extends BasePage {
     );
   }
 
-  async enterPassword() {
-    await this.passwordInput.setValue(
-      StringUtils.generatePassword(testData.testDataValues.passwordLength)
-    );
+  async waitForDisabledButtonToBeNotDisplayed() {
+    await this.disabledButton.waitForElementToBeNotDisplayed();
+  }
+
+  async enterPassword(password) {
+    await this.passwordInput.setValue(password);
   }
 
   async clickOnCreateMyAccoutButton() {
