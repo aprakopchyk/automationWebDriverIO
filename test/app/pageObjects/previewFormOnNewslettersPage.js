@@ -25,5 +25,4 @@ class PreviewFormOnNewslettersPage extends BasePage {
     await this.closeButtonOnPreviewForm.click();
   }
 }
-
 module.exports = new PreviewFormOnNewslettersPage();

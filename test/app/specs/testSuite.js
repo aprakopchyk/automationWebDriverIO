@@ -34,7 +34,7 @@ describe("Euronews app", () => {
     await NewslettersPage.isUniqueElementVisible();
     await NewslettersPage.selectRandomSubscriptionPlan();
     await EmailFormOnNewslettersPage.isUniqueElementVisible();
-    expect(await EmailFormOnNewslettersPage.buttonIsChanged()).to.be.true;
+    expect(await NewslettersPage.buttonIsChanged()).to.be.true;
     expect(await EmailFormOnNewslettersPage.formIsAtTheBottom()).to.be.true;
 
     const randomEmail = StringUtils.generateRandomEmail(

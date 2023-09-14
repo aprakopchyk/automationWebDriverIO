@@ -2,6 +2,7 @@ const BasePage = require("../../framework/basePage");
 const Form = require("../../framework/commonElements/form");
 const Input = require("../../framework/commonElements/input");
 const Button = require("../../framework/commonElements/button");
+const testData = require("../testData/testData");
 
 class EmailFormOnNewslettersPage extends BasePage {
   constructor() {
