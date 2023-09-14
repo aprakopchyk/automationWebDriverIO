@@ -1,15 +1,16 @@
 const Browser = require("../../framework/utils/browser");
+const StringUtils = require("../../framework/utils/stringUtils");
 const logger = require("../../framework/utils/logger");
-const config = require("../../framework/utils/config");
 const testCasesStatus = require("../../framework/utils/testCasesStatuses");
 const HomePage = require("../pageObjects/homePage");
-const url = require("../../framework/constants/urls");
 const NewslettersPage = require("../pageObjects/newslettersPage");
 const RegistrationPage = require("../pageObjects/registrationPage");
 const ConfirmationPage = require("../pageObjects/confirmationPage");
+const EmailFormOnNewslettersPage = require("../pageObjects/emailFormOnNewslettersPage");
+const PreviewFormOnNewslettersPage = require("../pageObjects/previewFormOnNewslettersPage");
 const testData = require("../testData/testData");
+const url = require("../../framework/constants/urls");
 const { expect } = require("chai");
-const StringUtils = require("../../framework/utils/stringUtils");
 
 describe("Euronews app", () => {
   beforeEach(async function () {
@@ -32,16 +33,16 @@ describe("Euronews app", () => {
 
     await NewslettersPage.isUniqueElementVisible();
     await NewslettersPage.selectRandomSubscriptionPlan();
-    await NewslettersPage.waitForEmailFormToBeDisplayed();
-    expect(await NewslettersPage.buttonIsChanged()).to.be.true;
-    expect(await NewslettersPage.formIsAtTheBottom()).to.be.true;
+    await EmailFormOnNewslettersPage.isUniqueElementVisible();
+    expect(await EmailFormOnNewslettersPage.buttonIsChanged()).to.be.true;
+    expect(await EmailFormOnNewslettersPage.formIsAtTheBottom()).to.be.true;
 
     const randomEmail = StringUtils.generateRandomEmail(
       testData.testDataValues.emailUsernameLength,
       testData.testDataValues.emailDomainLength
     );
-    await NewslettersPage.enterEmail(randomEmail);
-    await NewslettersPage.clickOnContinueButton();
+    await EmailFormOnNewslettersPage.enterEmail(randomEmail);
+    await EmailFormOnNewslettersPage.clickOnContinueButton();
 
     await RegistrationPage.isUniqueElementVisible();
     await RegistrationPage.enterPassword(
@@ -81,16 +82,16 @@ describe("Euronews app", () => {
 
     await NewslettersPage.waitForEuronewsPreviewLinkToBeDisplayed();
     await NewslettersPage.clickOnEuronewsNewsletterPreviewLink();
-    await NewslettersPage.waitForEuronewsPreviewFormToBeDisplayed();
+    await PreviewFormOnNewslettersPage.isUniqueElementVisible();
 
-    await NewslettersPage.clickOnPreviewCloseButton();
-    await NewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
+    await PreviewFormOnNewslettersPage.clickOnPreviewCloseButton();
+    await PreviewFormOnNewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
 
     await NewslettersPage.clickOnOtherNewsletterPreviewLink();
-    await NewslettersPage.waitForEuronewsPreviewFormToBeDisplayed();
+    await PreviewFormOnNewslettersPage.isUniqueElementVisible();
 
-    await NewslettersPage.clickOnPreviewCloseButton();
-    await NewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
+    await PreviewFormOnNewslettersPage.clickOnPreviewCloseButton();
+    await PreviewFormOnNewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
 
     await NewslettersPage.clickOnLogoIcon();
     await HomePage.isUniqueElementVisible();
