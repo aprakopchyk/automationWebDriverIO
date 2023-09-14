@@ -1,11 +1,11 @@
 const BasePage = require("../../framework/basePage");
-const PreviewForm = require("../../framework/commonElements/previewForm");
+const Form = require("../../framework/commonElements/form");
 const Button = require("../../framework/commonElements/button");
 
 class PreviewFormOnNewslettersPage extends BasePage {
   constructor() {
     super(
-      new PreviewForm(
+      new Form(
         "//div[contains(@id, 'today_previews')]",
         "Euronews preview form"
       )
@@ -25,4 +25,4 @@ class PreviewFormOnNewslettersPage extends BasePage {
     await this.closeButtonOnPreviewForm.click();
   }
 }
-module.exports = new PreviewFormOnNewslettersPage();
+module.exports = PreviewFormOnNewslettersPage;

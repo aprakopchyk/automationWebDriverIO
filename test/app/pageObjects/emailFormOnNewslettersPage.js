@@ -9,7 +9,6 @@ class EmailFormOnNewslettersPage extends BasePage {
     super(
       new Form("//section[contains(@class, 'sticky bottom')]", "Email form")
     );
-
     this.emailForm = this.uniqueElement;
     this.emailInput = new Input(
       "//input[contains(@type, 'email')]",
@@ -43,4 +42,4 @@ class EmailFormOnNewslettersPage extends BasePage {
   }
 }
 
-module.exports = new EmailFormOnNewslettersPage();
+module.exports = EmailFormOnNewslettersPage;

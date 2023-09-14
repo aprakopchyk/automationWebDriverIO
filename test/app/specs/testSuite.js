@@ -6,8 +6,6 @@ const HomePage = require("../pageObjects/homePage");
 const NewslettersPage = require("../pageObjects/newslettersPage");
 const RegistrationPage = require("../pageObjects/registrationPage");
 const ConfirmationPage = require("../pageObjects/confirmationPage");
-const EmailFormOnNewslettersPage = require("../pageObjects/emailFormOnNewslettersPage");
-const PreviewFormOnNewslettersPage = require("../pageObjects/previewFormOnNewslettersPage");
 const testData = require("../testData/testData");
 const url = require("../../framework/constants/urls");
 const { expect } = require("chai");
@@ -33,16 +31,16 @@ describe("Euronews app", () => {
 
     await NewslettersPage.isUniqueElementVisible();
     await NewslettersPage.selectRandomSubscriptionPlan();
-    await EmailFormOnNewslettersPage.isUniqueElementVisible();
+    await NewslettersPage.emailForm.isUniqueElementVisible();
     expect(await NewslettersPage.buttonIsChanged()).to.be.true;
-    expect(await EmailFormOnNewslettersPage.formIsAtTheBottom()).to.be.true;
+    expect(await NewslettersPage.emailForm.formIsAtTheBottom()).to.be.true;
 
     const randomEmail = StringUtils.generateRandomEmail(
       testData.testDataValues.emailUsernameLength,
       testData.testDataValues.emailDomainLength
     );
-    await EmailFormOnNewslettersPage.enterEmail(randomEmail);
-    await EmailFormOnNewslettersPage.clickOnContinueButton();
+    await NewslettersPage.emailForm.enterEmail(randomEmail);
+    await NewslettersPage.emailForm.clickOnContinueButton();
 
     await RegistrationPage.isUniqueElementVisible();
     await RegistrationPage.enterPassword(
@@ -82,16 +80,16 @@ describe("Euronews app", () => {
 
     await NewslettersPage.waitForEuronewsPreviewLinkToBeDisplayed();
     await NewslettersPage.clickOnEuronewsNewsletterPreviewLink();
-    await PreviewFormOnNewslettersPage.isUniqueElementVisible();
+    await NewslettersPage.previewForm.isUniqueElementVisible();
 
-    await PreviewFormOnNewslettersPage.clickOnPreviewCloseButton();
-    await PreviewFormOnNewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
+    await NewslettersPage.previewForm.clickOnPreviewCloseButton();
+    await NewslettersPage.previewForm.waitForEuronewsPreviewFormToBeNotDisplayed();
 
     await NewslettersPage.clickOnOtherNewsletterPreviewLink();
-    await PreviewFormOnNewslettersPage.isUniqueElementVisible();
+    await NewslettersPage.previewForm.isUniqueElementVisible();
 
-    await PreviewFormOnNewslettersPage.clickOnPreviewCloseButton();
-    await PreviewFormOnNewslettersPage.waitForEuronewsPreviewFormToBeNotDisplayed();
+    await NewslettersPage.previewForm.clickOnPreviewCloseButton();
+    await NewslettersPage.previewForm.waitForEuronewsPreviewFormToBeNotDisplayed();
 
     await NewslettersPage.clickOnLogoIcon();
     await HomePage.isUniqueElementVisible();

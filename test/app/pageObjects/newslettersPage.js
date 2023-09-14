@@ -1,4 +1,6 @@
 const ArrayUtils = require("../../framework/utils/arrayUtils");
+const PreviewFormOnNewslettersPage = require("../pageObjects/previewFormOnNewslettersPage");
+const EmailFormOnNewslettersPage = require("../pageObjects/emailFormOnNewslettersPage");
 const BasePage = require("../../framework/basePage");
 const Label = require("../../framework/commonElements/label");
 const Link = require("../../framework/commonElements/link");
@@ -26,6 +28,9 @@ class NewslettersPage extends BasePage {
     );
     this.previewLinks = new Link(baseXpath("previews"), "Previews links");
     this.homePage = new Link("//a[@href='/']");
+
+    this.previewForm = new PreviewFormOnNewslettersPage();
+    this.emailForm = new EmailFormOnNewslettersPage();
   }
 
   async getNewsletterName(name) {
